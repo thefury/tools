@@ -1,5 +1,9 @@
 # tools
 
+## Aliases
+
+-- **[pecohist](https://github.com/thefury/tools/blob/master/pecohist.sh)**: CL History completion
+
 ## Scripts
 
 - **[delmerged.sh](https://github.com/thefury/tools/blob/master/delmerged.sh)**: delete merged git branches
