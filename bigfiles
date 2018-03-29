@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'filesize'
+
+opts = {}
+opts[:path] = '/'
+opts[:number] = 15
+
+OptionParser.new do |p|
+  p.on("-v", "--verbose", "verbose output") do |v|
+    opts[:verbose] = v
+  end
+
+  p.on("-p", "--path PATH", "report large files starting at PATH (default '/')") do |v|
+    opts[:path] = v
+  end
+
+  p.on("-n", "--number N", "report the largest N files (default 15)") do |v|
+    opts[:number] = v
+  end
+end.parse!
+
+if opts[:verbose]
+  puts "scanning #{opts[:path]} for #{opts[:number]} largest files..."
+end
+
+# we're not using the du -h option because sort doesn't handle -h on a mac
+`sudo du -a #{opts[:path]} | sort -rn | head -n #{opts[:number]}`.each_line do |line|
+  size = Filesize.from(line.split("\t").first.strip + " B").pretty
+  file = line.split("\t").last.strip 
+  
+  puts "#{size}\t#{file}"
+end
